@@ -578,6 +578,9 @@ hr { border-color: #0f3460; margin: 2px 0; }
       <label><input type="checkbox" id="flipH"> Lật ngang</label>
       <label><input type="checkbox" id="flipV"> Lật dọc</label>
     </div>
+    <div class="checkbox-row">
+      <label><input type="checkbox" id="circleMask" checked> Bo tròn ảnh chồng</label>
+    </div>
 
     <label>Co giãn ảnh chồng</label>
     <select id="fitMode">
@@ -700,6 +703,7 @@ const infoBar = document.getElementById('infoBar');
 const flipH = document.getElementById('flipH');
 const flipV = document.getElementById('flipV');
 const fitMode = document.getElementById('fitMode');
+const circleMask = document.getElementById('circleMask');
 const posBtns = document.querySelectorAll('[data-pos]');
 
 let bgImg = null;
@@ -1152,7 +1156,7 @@ fgInput.addEventListener('change', async (e) => {
 });
 
 [opacitySlider, posXSlider, posYSlider, scaleSlider, rotateSlider,
- blendMode, flipH, flipV, fitMode].forEach(el => {
+ blendMode, flipH, flipV, fitMode, circleMask].forEach(el => {
   el.addEventListener('input', render);
 });
 
@@ -1284,6 +1288,12 @@ function render() {
     ctx.scale(fFlipH ? -1 : 1, fFlipV ? -1 : 1);
   }
 
+  if (circleMask.checked) {
+    ctx.beginPath();
+    ctx.arc(0, 0, Math.max(drawW, drawH) / 2, 0, Math.PI * 2);
+    ctx.clip();
+  }
+
   ctx.drawImage(fgImg, -drawW / 2, -drawH / 2, drawW, drawH);
   ctx.restore();
 }
@@ -1386,6 +1396,11 @@ downloadBtn.addEventListener('click', async () => {
       octx.translate(BW / 2 + ox, BH / 2 + oy);
       octx.rotate(rot * Math.PI / 180);
       octx.scale(s, s);
+      if (circleMask.checked) {
+        octx.beginPath();
+        octx.arc(0, 0, Math.max(fgImg.naturalWidth, fgImg.naturalHeight) / 2, 0, Math.PI * 2);
+        octx.clip();
+      }
       octx.drawImage(fgImg, -fgImg.naturalWidth / 2, -fgImg.naturalHeight / 2);
       octx.restore();
     }
