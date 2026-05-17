@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghép Ảnh - Cao su Đồng Phú</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1a1a2e;
+  color: #eee;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(135deg, #0d4f2b, #1a7a42);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid #ffd700;
+  flex-shrink: 0;
+}
+.navbar .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.navbar .brand .logo {
+  width: 40px; height: 40px;
+  background: rgba(255,215,0,.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffd700;
+  border: 2px solid rgba(255,215,0,.3);
+}
+.navbar .brand .info {
+  display: flex;
+  flex-direction: column;
+}
+.navbar .brand .company {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.navbar .brand .company span { color: #ffd700; }
+.navbar .brand .slogan {
+  font-size: 12px;
+  color: rgba(255,255,255,.6);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.navbar .year-badge {
+  background: rgba(255,215,0,.15);
+  border: 1px solid rgba(255,215,0,.3);
+  border-radius: 8px;
+  padding: 4px 16px;
+  text-align: center;
+}
+.navbar .year-badge .num {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffd700;
+  line-height: 1;
+}
+.navbar .year-badge .lbl {
+  font-size: 10px;
+  color: rgba(255,215,0,.7);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Body layout */
+.body-wrap {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  min-width: 300px;
+  background: #16213e;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+  border-right: 1px solid #0f3460;
+}
+.sidebar h2 {
+  font-size: 18px;
+  color: #e94560;
+  margin-bottom: 2px;
+}
+.sidebar > label {
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #aaa;
+}
+.sidebar > label span { color: #eee; font-weight: 600; }
+.sidebar input[type="range"] {
+  width: 100%;
+  margin: 4px 0;
+  accent-color: #e94560;
+}
+.sidebar input[type="file"] { font-size: 12px; color: #ccc; }
+.sidebar select {
+  width: 100%;
+  padding: 6px 8px;
+  background: #0f3460;
+  color: #eee;
+  border: 1px solid #e94560;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.upload-group {
+  background: #0f3460;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.upload-group .file-label { font-size: 12px; color: #888; }
+.btn {
+  padding: 10px;
+  background: #e94560;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background .2s;
+}
+.btn:hover { background: #c73a52; }
+.btn-secondary {
+  background: #0f3460;
+  color: #e94560;
+  border: 1px solid #e94560;
+}
+.btn-secondary:hover { background: #1a4a7a; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-cam {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #0f3460, #1a4a7a);
+  color: #eee;
+  border: 2px dashed #e94560;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all .25s;
+  margin-top: 6px;
+}
+.btn-cam:hover {
+  background: linear-gradient(135deg, #1a4a7a, #2a5a9a);
+  border-color: #ff6b81;
+  border-style: solid;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(233,69,96,.2);
+}
+.btn-cam .cam-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+.btn-cam .cam-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.3;
+}
+.btn-cam .cam-text strong {
+  font-size: 14px;
+  color: #fff;
+}
+.btn-cam .cam-text small {
+  font-size: 11px;
+  color: #888;
+}
+.btn-cam .cam-arrow {
+  margin-left: auto;
+  font-size: 18px;
+  color: #e94560;
+  transition: transform .2s;
+}
+.btn-cam:hover .cam-arrow {
+  transform: translateX(4px);
+}
+
+.section-title {
+  font-size: 12px;
+  color: #e94560;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-top: 4px;
+}
+hr { border-color: #0f3460; margin: 2px 0; }
+
+.checkbox-row {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #aaa;
+}
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: #ccc;
+}
+.checkbox-row input { accent-color: #e94560; }
+
+.btn-row { display: flex; gap: 8px; }
+.btn-row .btn { flex: 1; text-align: center; }
+
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #0f0f23;
+  overflow: hidden;
+}
+.canvas-wrap {
+  position: relative;
+  display: inline-block;
+}
+#canvas {
+  display: block;
+  max-width: 90vw;
+  max-height: 80vh;
+  cursor: grab;
+  box-shadow: 0 4px 30px rgba(0,0,0,.5);
+  border-radius: 4px;
+}
+#canvas:active { cursor: grabbing; }
+.placeholder {
+  color: #555;
+  text-align: center;
+  font-size: 18px;
+  user-select: none;
+}
+.placeholder p { margin-top: 8px; font-size: 14px; color: #444; }
+
+.coord-display {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.75);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #aaa;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.coord-display span { color: #e94560; }
+
+.info-bar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.7);
+  padding: 4px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #888;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Camera modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: #16213e;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 560px;
+  border: 1px solid #0f3460;
+}
+.modal-box.modal-horizontal {
+  max-width: 800px;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+.modal-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal-right {
+  width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cam-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cam-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e94560;
+}
+.cam-badge {
+  font-size: 10px;
+  background: rgba(233,69,96,.15);
+  color: #e94560;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.modal-box .cam-wrap {
+  position: relative;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+.modal-box .cam-wrap video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.modal-box .cam-wrap canvas {
+  display: none;
+}
+.modal-box .cam-preview {
+  text-align: center;
+}
+.modal-box .cam-preview img {
+  max-height: 100px;
+  border-radius: 6px;
+  border: 2px solid #e94560;
+}
+.modal-box .cam-filters {
+  padding: 8px 10px;
+  background: #0f3460;
+  border-radius: 6px;
+}
+.modal-box .filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.modal-box .filter-group {
+  flex: 1;
+  min-width: 0;
+}
+.modal-box .filter-group label {
+  font-size: 10px;
+  color: #888;
+  display: block;
+  margin-bottom: 1px;
+}
+.modal-box .filter-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.modal-box .filter-control input[type="range"] {
+  flex: 1;
+  height: 4px;
+  accent-color: #e94560;
+}
+.modal-box .filter-val {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e94560;
+  min-width: 28px;
+  text-align: right;
+}
+.modal-box .filter-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,.1);
+  flex-shrink: 0;
+}
+
+/* Right side buttons */
+.right-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal-box .btn-capture {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #e94560, #d63a4e);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 16px;
+  transition: all .2s;
+  box-shadow: 0 4px 16px rgba(233,69,96,.25);
+}
+.modal-box .btn-capture:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(233,69,96,.4);
+}
+.modal-box .btn-close-side {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: #666;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all .2s;
+}
+.modal-box .btn-close-side:hover {
+  color: #e94560;
+  border-color: rgba(233,69,96,.3);
+}
+.modal-box .btn-complete {
+  width: 100%;
+  padding: 18px 12px;
+  background: linear-gradient(135deg, #ffd700, #f0c000);
+  color: #1a4a2a;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 17px;
+  transition: all .2s;
+  box-shadow: 0 4px 20px rgba(255,215,0,.25);
+}
+.modal-box .btn-complete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255,215,0,.4);
+}
+.modal-box .btn-retake {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,255,255,.06);
+  color: #999;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all .2s;
+}
+.modal-box .btn-retake:hover {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  border-color: rgba(255,255,255,.2);
+}
+
+@media (max-width: 768px) {
+  .body-wrap { flex-direction: column; }
+  .sidebar { width: 100%; min-width: unset; max-height: 300px; border-right: none; border-bottom: 1px solid #0f3460; }
+  .navbar { flex-wrap: wrap; gap: 8px; }
+  .navbar .brand .company { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand">
+    <div class="logo">ĐP</div>
+    <div class="info">
+      <div class="company">Công ty Cổ phần Cao su <span>Đồng Phú</span></div>
+      <div class="slogan">Truyền Thống 45 Năm</div>
+    </div>
+  </div>
+  <div class="year-badge">
+    <div class="num">45</div>
+    <div class="lbl">Năm</div>
+  </div>
+</div>
+
+<div class="body-wrap">
+  <div class="sidebar">
+    <h2>Ghép Ảnh</h2>
+
+    <div class="upload-group">
+      <div class="file-label">Ảnh nền (Background)</div>
+      <input type="file" id="bgInput" accept="image/*">
+    </div>
+
+    <div class="upload-group" style="position:relative">
+      <div class="file-label">Ảnh chồng (Overlay)</div>
+      <input type="file" id="fgInput" accept="image/*">
+      <button class="btn btn-cam" id="camBtn" type="button">
+        <span class="cam-icon">📷</span>
+        <span class="cam-text">
+          <strong>Chụp từ Camera</strong>
+          <small>Chụp ảnh trực tiếp từ webcam</small>
+        </span>
+        <span class="cam-arrow">→</span>
+      </button>
+    </div>
+
+    <hr>
+
+    <div class="section-title">Hiệu chỉnh</div>
+
+    <label>Độ mờ <span id="opacityVal">1.00</span></label>
+    <input type="range" id="opacity" min="0" max="1" step="0.01" value="1">
+
+    <label>Vị trí X <span id="xVal">0</span></label>
+    <input type="range" id="posX" min="-2000" max="2000" step="1" value="0">
+
+    <label>Vị trí Y <span id="yVal">0</span></label>
+    <input type="range" id="posY" min="-2000" max="2000" step="1" value="0">
+
+    <label>Tỷ lệ <span id="scaleVal">1.00</span></label>
+    <input type="range" id="scale" min="0.05" max="3" step="0.01" value="1">
+
+    <label>Xoay <span id="rotateVal">0°</span></label>
+    <input type="range" id="rotate" min="-180" max="180" step="1" value="0">
+
+    <label>Chế độ hòa trộn</label>
+    <select id="blendMode">
+      <option value="normal">Normal</option>
+      <option value="multiply">Multiply</option>
+      <option value="screen">Screen</option>
+      <option value="overlay">Overlay</option>
+      <option value="darken">Darken</option>
+      <option value="lighten">Lighten</option>
+      <option value="difference">Difference</option>
+      <option value="exclusion">Exclusion</option>
+      <option value="hard-light">Hard Light</option>
+      <option value="soft-light">Soft Light</option>
+      <option value="color-dodge">Color Dodge</option>
+      <option value="color-burn">Color Burn</option>
+    </select>
+
+    <div class="section-title">Tùy chọn</div>
+
+    <div class="checkbox-row">
+      <label><input type="checkbox" id="flipH"> Lật ngang</label>
+      <label><input type="checkbox" id="flipV"> Lật dọc</label>
+    </div>
+
+    <label>Co giãn ảnh chồng</label>
+    <select id="fitMode">
+      <option value="none">Kích thước gốc</option>
+      <option value="fit-width">Vừa chiều rộng</option>
+      <option value="fit-height">Vừa chiều cao</option>
+      <option value="cover">Che phủ (Cover)</option>
+      <option value="fill">Kéo giãn đầy (Fill)</option>
+    </select>
+
+    <label>Căn vị trí nhanh</label>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" data-pos="center">Giữa</button>
+      <button class="btn btn-secondary btn-sm" data-pos="top-left">Trái trên</button>
+      <button class="btn btn-secondary btn-sm" data-pos="top-right">Phải trên</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary btn-sm" data-pos="bottom-left">Trái dưới</button>
+      <button class="btn btn-secondary btn-sm" data-pos="bottom-right">Phải dưới</button>
+    </div>
+
+    <hr>
+
+    <button class="btn" id="downloadBtn">Tải ảnh đã ghép</button>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="resetPosBtn" style="flex:1">Reset vị trí</button>
+      <button class="btn btn-secondary" id="resetBtn" style="flex:1">Reset tất cả</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="canvas-wrap">
+      <canvas id="canvas"></canvas>
+      <div class="placeholder" id="placeholder">
+        <div style="font-size:48px;opacity:.3">🖼️</div>
+        Chọn ảnh nền và ảnh chồng để bắt đầu
+        <p>Kéo thả ảnh chồng để canh chỉnh vị trí</p>
+      </div>
+      <div class="info-bar" id="infoBar" style="display:none"></div>
+      <div class="coord-display" id="coordDisplay" style="display:none">
+        X: <span id="coordX">0</span> &nbsp; Y: <span id="coordY">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="camModal">
+  <div class="modal-box modal-horizontal">
+    <div class="modal-left">
+      <div class="cam-header">
+        <span class="cam-title">📸 Chụp ảnh từ Camera</span>
+        <span class="cam-badge">Chỉ lấy khuôn mặt</span>
+      </div>
+      <div class="cam-wrap">
+        <video id="camVideo" autoplay playsinline></video>
+        <canvas id="camCanvas"></canvas>
+      </div>
+      <div class="cam-preview" id="camPreview" style="display:none">
+        <img id="camPreviewImg">
+      </div>
+      <div class="cam-filters" id="camFilters" style="display:none">
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Độ sáng</label>
+            <div class="filter-control">
+              <input type="range" id="brightness" min="0.5" max="2" step="0.05" value="1.2">
+              <span class="filter-val" id="brightnessVal">1.20</span>
+            </div>
+          </div>
+          <div class="filter-divider"></div>
+          <div class="filter-group">
+            <label>Làm mịn da</label>
+            <div class="filter-control">
+              <input type="range" id="skinSmooth" min="0" max="1" step="0.05" value="0.4">
+              <span class="filter-val" id="smoothVal">0.40</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-right">
+      <div class="right-actions" id="camActionsInit">
+        <button class="btn btn-capture" id="camCaptureBtn">📸 Chụp ảnh</button>
+        <button class="btn btn-close-side" id="camCloseBtn">✕ Đóng</button>
+      </div>
+      <div class="right-actions" id="camActionsDone" style="display:none">
+        <button class="btn btn-complete" id="camUseBtn">✅ Hoàn thành</button>
+        <button class="btn btn-retake" id="camRetakeBtn">🔄 Chụp lại</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="bg-data.js"></script>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const bgInput = document.getElementById('bgInput');
+const fgInput = document.getElementById('fgInput');
+const opacitySlider = document.getElementById('opacity');
+const opacityVal = document.getElementById('opacityVal');
+const posXSlider = document.getElementById('posX');
+const posYSlider = document.getElementById('posY');
+const xVal = document.getElementById('xVal');
+const yVal = document.getElementById('yVal');
+const scaleSlider = document.getElementById('scale');
+const scaleVal = document.getElementById('scaleVal');
+const rotateSlider = document.getElementById('rotate');
+const rotateVal = document.getElementById('rotateVal');
+const blendMode = document.getElementById('blendMode');
+const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
+const resetPosBtn = document.getElementById('resetPosBtn');
+const placeholder = document.getElementById('placeholder');
+const coordDisplay = document.getElementById('coordDisplay');
+const coordX = document.getElementById('coordX');
+const coordY = document.getElementById('coordY');
+const infoBar = document.getElementById('infoBar');
+const flipH = document.getElementById('flipH');
+const flipV = document.getElementById('flipV');
+const fitMode = document.getElementById('fitMode');
+const posBtns = document.querySelectorAll('[data-pos]');
+
+let bgImg = null;
+let fgImg = null;
+let isDragging = false;
+let dragStartX, dragStartY;
+let startPosX, startPosY;
+let camStream = null;
+
+// Camera
+const camModal = document.getElementById('camModal');
+const camVideo = document.getElementById('camVideo');
+const camCanvas = document.getElementById('camCanvas');
+const camBtn = document.getElementById('camBtn');
+const camCloseBtn = document.getElementById('camCloseBtn');
+const camCaptureBtn = document.getElementById('camCaptureBtn');
+const camRetakeBtn = document.getElementById('camRetakeBtn');
+const camUseBtn = document.getElementById('camUseBtn');
+const camActionsInit = document.getElementById('camActionsInit');
+const camActionsDone = document.getElementById('camActionsDone');
+
+// Filter refs
+const brightnessSlider = document.getElementById('brightness');
+const brightnessVal = document.getElementById('brightnessVal');
+const skinSmoothSlider = document.getElementById('skinSmooth');
+const smoothVal = document.getElementById('smoothVal');
+const camFilters = document.getElementById('camFilters');
+
+let originalFaceCanvas = null; // stored after face crop, before filters
+
+function applyFilters() {
+  if (!originalFaceCanvas) return;
+  const bright = parseFloat(brightnessSlider.value);
+  const smooth = parseFloat(skinSmoothSlider.value);
+  brightnessVal.textContent = bright.toFixed(2);
+  smoothVal.textContent = smooth.toFixed(2);
+
+  const c = camCanvas;
+  const w = originalFaceCanvas.width;
+  const h = originalFaceCanvas.height;
+  c.width = w;
+  c.height = h;
+  const ctx2 = c.getContext('2d');
+  ctx2.clearRect(0, 0, w, h);
+
+  // Apply brightness
+  ctx2.filter = `brightness(${bright})`;
+  ctx2.drawImage(originalFaceCanvas, 0, 0);
+  ctx2.filter = 'none';
+
+  if (smooth > 0.01) {
+    // Skin smoothing: blend with blurred version
+    const imgData = ctx2.getImageData(0, 0, w, h);
+    const blurred = boxBlur(imgData, Math.round(smooth * 4) + 1);
+    const data = imgData.data;
+    const bData = blurred.data;
+    const output = ctx2.createImageData(w, h);
+    const oData = output.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const a = smooth * 0.7;
+      oData[i] = data[i] * (1 - a) + bData[i] * a;
+      oData[i+1] = data[i+1] * (1 - a) + bData[i+1] * a;
+      oData[i+2] = data[i+2] * (1 - a) + bData[i+2] * a;
+      oData[i+3] = data[i+3];
+    }
+    ctx2.putImageData(output, 0, 0);
+  }
+
+  showPreview(c);
+  capturedBlob = dataURLToBlob(c.toDataURL('image/png'));
+}
+
+function dataURLToBlob(dataURL) {
+  const parts = dataURL.split(',');
+  const mime = parts[0].match(/:(.*?);/)[1];
+  const bytes = atob(parts[1]);
+  const ab = new ArrayBuffer(bytes.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < bytes.length; i++) ia[i] = bytes.charCodeAt(i);
+  return new Blob([ab], { type: mime });
+}
+
+function boxBlur(imageData, radius) {
+  const w = imageData.width, h = imageData.height;
+  const src = new Uint32Array(imageData.data.buffer);
+  const tmp = new Uint32Array(src.length);
+  const dst = new Uint32Array(src.length);
+  const r = Math.min(radius, 10);
+  const size = r * 2 + 1;
+
+  // Horizontal pass
+  for (let y = 0; y < h; y++) {
+    const row = y * w;
+    let ri = row, gi = row, bi = row, ai = row;
+    for (let x = 0; x < w; x++) {
+      const i = row + x;
+      if (x > r) {
+        const p = src[row + x - r - 1];
+        ri -= p & 0xff;
+        gi -= (p >> 8) & 0xff;
+        bi -= (p >> 16) & 0xff;
+        ai -= (p >> 24) & 0xff;
+      }
+      if (x + r < w) {
+        const p = src[row + x + r];
+        ri += p & 0xff;
+        gi += (p >> 8) & 0xff;
+        bi += (p >> 16) & 0xff;
+        ai += (p >> 24) & 0xff;
+      }
+      tmp[i] = ((ai / size) << 24) | ((bi / size) << 16) | ((gi / size) << 8) | (ri / size);
+    }
+  }
+
+  // Vertical pass
+  for (let x = 0; x < w; x++) {
+    let ri = 0, gi = 0, bi = 0, ai = 0;
+    for (let y = -r; y <= r; y++) {
+      const yy = Math.max(0, Math.min(h - 1, y));
+      const p = tmp[yy * w + x];
+      ri += p & 0xff;
+      gi += (p >> 8) & 0xff;
+      bi += (p >> 16) & 0xff;
+      ai += (p >> 24) & 0xff;
+    }
+    for (let y = 0; y < h; y++) {
+      const i = y * w + x;
+      if (y > r) {
+        const p = tmp[(y - r - 1) * w + x];
+        ri -= p & 0xff;
+        gi -= (p >> 8) & 0xff;
+        bi -= (p >> 16) & 0xff;
+        ai -= (p >> 24) & 0xff;
+      }
+      if (y + r < h) {
+        const p = tmp[(y + r) * w + x];
+        ri += p & 0xff;
+        gi += (p >> 8) & 0xff;
+        bi += (p >> 16) & 0xff;
+        ai += (p >> 24) & 0xff;
+      }
+      dst[i] = ((ai / size) << 24) | ((bi / size) << 16) | ((gi / size) << 8) | (ri / size);
+    }
+  }
+
+  const out = new ImageData(new Uint8ClampedArray(dst.buffer), w, h);
+  return out;
+}
+
+[brightnessSlider, skinSmoothSlider].forEach(el => {
+  el.addEventListener('input', applyFilters);
+});
+
+camBtn.addEventListener('click', async () => {
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } } });
+    camVideo.srcObject = camStream;
+    camModal.classList.add('active');
+    camPreview.style.display = 'none';
+    camFilters.style.display = 'none';
+    originalFaceCanvas = null;
+    camActionsInit.style.display = 'flex';
+    camActionsDone.style.display = 'none';
+  } catch (e) {
+    alert('Không thể truy cập camera. Vui lòng kiểm tra quyền truy cập.');
+  }
+});
+
+function stopCam() {
+  if (camStream) {
+    camStream.getTracks().forEach(t => t.stop());
+    camStream = null;
+  }
+}
+
+camCloseBtn.addEventListener('click', () => {
+  camPreview.style.display = 'none';
+  camFilters.style.display = 'none';
+  originalFaceCanvas = null;
+  capturedBlob = null;
+  stopCam();
+  camModal.classList.remove('active');
+});
+
+const camPreview = document.getElementById('camPreview');
+const camPreviewImg = document.getElementById('camPreviewImg');
+
+let capturedBlob = null;
+
+async function detectFace(imageSource) {
+  if (!window.FaceDetector) return null;
+  try {
+    const detector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
+    const faces = await detector.detect(imageSource);
+    if (faces.length === 0) return null;
+    return faces[0];
+  } catch {
+    return null;
+  }
+}
+
+function extractFace(sourceCanvas, face) {
+  const box = face.boundingBox;
+  const landmarks = face.landmarks || [];
+
+  const cx = box.x + box.width / 2;
+  const cy = box.y + box.height / 2;
+  const faceSize = Math.max(box.width, box.height);
+  const pad = faceSize * 0.5;
+  const size = Math.round(faceSize + pad * 2);
+
+  let cropX = Math.max(0, Math.round(cx - size / 2));
+  let cropY = Math.max(0, Math.round(cy - size / 2));
+  let cropW = Math.min(sourceCanvas.width - cropX, size);
+  let cropH = Math.min(sourceCanvas.height - cropY, size);
+  const finalSize = Math.max(cropW, cropH);
+
+  const out = document.createElement('canvas');
+  out.width = finalSize;
+  out.height = finalSize;
+  const octx = out.getContext('2d');
+
+  octx.drawImage(sourceCanvas, cropX, cropY, cropW, cropH, 0, 0, finalSize, finalSize);
+
+  // Build face oval mask
+  const jawPts = landmarks
+    .filter(l => l.type === 'jaw')
+    .map(l => ({ x: (l.location.x - cropX) / finalSize, y: (l.location.y - cropY) / finalSize }));
+
+  const leftEye = landmarks.find(l => l.type === 'leftEye');
+  const rightEye = landmarks.find(l => l.type === 'rightEye');
+  const mouth = landmarks.find(l => l.type === 'mouth');
+
+  octx.globalCompositeOperation = 'destination-in';
+
+  if (jawPts.length >= 4) {
+    // Use jaw landmarks for precise face contour
+    octx.beginPath();
+    octx.moveTo(jawPts[0].x * finalSize, jawPts[0].y * finalSize);
+    for (let i = 1; i < jawPts.length; i++) {
+      octx.lineTo(jawPts[i].x * finalSize, jawPts[i].y * finalSize);
+    }
+    // Close the path with a curve across the forehead
+    const topY = jawPts.reduce((min, p) => Math.min(min, p.y), 1) * finalSize - finalSize * 0.1;
+    octx.lineTo(jawPts[jawPts.length - 1].x * finalSize, topY);
+    octx.lineTo(jawPts[0].x * finalSize, topY);
+    octx.closePath();
+    octx.fill();
+  } else if (leftEye && rightEye && mouth) {
+    // Estimate face oval from eyes and mouth
+    const eyeY = (leftEye.location.y + rightEye.location.y) / 2;
+    const eyeDist = Math.abs(rightEye.location.x - leftEye.location.x);
+    const faceW = eyeDist * 2.5;
+    const faceH = (mouth.location.y - eyeY) * 2.2;
+    const centerX = (leftEye.location.x + rightEye.location.x) / 2;
+    const centerY = (eyeY + mouth.location.y) / 2;
+
+    octx.beginPath();
+    octx.ellipse(
+      centerX - cropX,
+      centerY - cropY,
+      faceW * 0.5,
+      faceH * 0.55,
+      0, 0, Math.PI * 2
+    );
+    octx.fill();
+  } else {
+    // Fallback: elliptical crop from bounding box
+    octx.beginPath();
+    octx.ellipse(
+      finalSize / 2, finalSize / 2,
+      finalSize * 0.42, finalSize * 0.48,
+      0, 0, Math.PI * 2
+    );
+    octx.fill();
+  }
+
+  octx.globalCompositeOperation = 'source-over';
+  return out;
+}
+
+function showPreview(canvasEl) {
+  camPreviewImg.src = canvasEl.toDataURL();
+  camPreview.style.display = 'block';
+}
+
+camCaptureBtn.addEventListener('click', async () => {
+  const video = camVideo;
+  const c = camCanvas;
+  c.width = video.videoWidth;
+  c.height = video.videoHeight;
+  c.getContext('2d').drawImage(video, 0, 0);
+
+  // Center oval crop fallback (used when FaceDetector fails or is unavailable)
+  function centerOvalCrop(source) {
+    const s = Math.min(source.width, source.height) * 0.4;
+    const fc = document.createElement('canvas');
+    fc.width = s * 2;
+    fc.height = s * 2;
+    const fcx = fc.getContext('2d');
+    fcx.drawImage(source, (source.width - s*2)/2, (source.height - s*2)/2, s*2, s*2, 0, 0, s*2, s*2);
+    fcx.globalCompositeOperation = 'destination-in';
+    fcx.beginPath();
+    fcx.ellipse(s, s, s*0.85, s*0.95, 0, 0, Math.PI*2);
+    fcx.fill();
+    return fc;
+  }
+
+  let faceResult = null;
+  const face = await detectFace(c);
+  if (face) {
+    faceResult = extractFace(c, face);
+  } else if (window.FaceDetector) {
+    faceResult = centerOvalCrop(c);
+  } else {
+    faceResult = centerOvalCrop(c);
+  }
+
+  if (faceResult) {
+    originalFaceCanvas = faceResult;
+    camFilters.style.display = 'block';
+    brightnessSlider.value = '1.2';
+    skinSmoothSlider.value = '0.4';
+    c.width = faceResult.width;
+    c.height = faceResult.height;
+    try { applyFilters(); } catch(e) { console.warn('Filter error:', e); }
+    camActionsInit.style.display = 'none';
+    camActionsDone.style.display = 'flex';
+  } else {
+    alert('Không phát hiện được khuôn mặt. Hãy chụp lại với mặt rõ hơn.');
+  }
+});
+
+camRetakeBtn.addEventListener('click', () => {
+  camPreview.style.display = 'none';
+  camFilters.style.display = 'none';
+  originalFaceCanvas = null;
+  capturedBlob = null;
+  camActionsInit.style.display = 'flex';
+  camActionsDone.style.display = 'none';
+});
+
+camUseBtn.addEventListener('click', async () => {
+  if (!capturedBlob) return;
+  const file = new File([capturedBlob], 'camera_photo.png', { type: 'image/png' });
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  fgInput.files = dt.files;
+  fgImg = await loadImage(file);
+  camPreview.style.display = 'none';
+  camFilters.style.display = 'none';
+  originalFaceCanvas = null;
+  capturedBlob = null;
+  stopCam();
+  camModal.classList.remove('active');
+  render();
+});
+
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+let generatedBg = null;
+
+function drawSafeBackground(ctx, w, h) {
+  const g = ctx.createLinearGradient(0, 0, w, h);
+  g.addColorStop(0, '#0a3a1e'); g.addColorStop(0.3, '#166633'); g.addColorStop(0.7, '#1f7a3d'); g.addColorStop(1, '#0a3a1e');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = 'rgba(255,215,0,.05)';
+  for (let i = 0; i < w + h; i += 40) ctx.fillRect(i, 0, 1, h);
+  ctx.fillStyle = 'rgba(255,215,0,.12)';
+  ctx.fillRect(0, 0, w, 3); ctx.fillRect(0, h - 3, w, 3);
+  ctx.fillStyle = 'rgba(255,215,0,.08)';
+  ctx.fillRect(0, 60, 5, h - 120);
+  ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 15;
+  ctx.font = 'bold 36px "Segoe UI",sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.fillText('Cao su Đồng Phú', 70, h / 2 - 30);
+  ctx.shadowBlur = 8;
+  ctx.font = 'bold 22px "Segoe UI",sans-serif';
+  ctx.fillStyle = '#ffd700';
+  ctx.fillText('TRUYỀN THỐNG 45 NĂM', 70, h / 2 + 20);
+  ctx.textAlign = 'right';
+  ctx.shadowBlur = 25;
+  ctx.font = '900 72px "Segoe UI",sans-serif';
+  ctx.fillStyle = '#ffd700';
+  ctx.fillText('45', w - 50, h / 2);
+  ctx.shadowBlur = 0;
+  ctx.textAlign = 'right';
+  ctx.font = '12px "Segoe UI",sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,.3)';
+  ctx.fillText('CAO SU ĐỒNG PHÚ', w - 50, h - 14);
+}
+
+function generateDefaultBg() {
+  const c = document.createElement('canvas');
+  c.width = 1200; c.height = 675;
+  drawSafeBackground(c.getContext('2d'), 1200, 675);
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.src = c.toDataURL('image/png');
+  });
+}
+
+async function loadImageFromUrl(url) {
+  try {
+    const r = await fetch(url);
+    const blob = await r.blob();
+    const img = new Image();
+    await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = URL.createObjectURL(blob); });
+    return img;
+  } catch {
+    // Direct load from file:// (displays but taints canvas)
+    const img = new Image();
+    await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+    return img;
+  }
+}
+
+(async function loadDefaultBg() {
+  // Pre-generate safe fallback background
+  try { generatedBg = await generateDefaultBg(); } catch {}
+  // Try to load from embedded data URL (same-origin, no canvas taint)
+  try {
+    bgImg = await loadImageFromUrl(typeof BG_DEFAULT_DATA_URL !== 'undefined' ? BG_DEFAULT_DATA_URL : 'images/bg-default.jpg');
+  } catch {
+    if (generatedBg) bgImg = generatedBg;
+  }
+  render();
+})();
+
+bgInput.addEventListener('change', async (e) => {
+  if (!e.target.files[0]) return;
+  bgImg = await loadImage(e.target.files[0]);
+  updateSliderRanges();
+  render();
+});
+
+fgInput.addEventListener('change', async (e) => {
+  if (!e.target.files[0]) return;
+  fgImg = await loadImage(e.target.files[0]);
+  render();
+});
+
+[opacitySlider, posXSlider, posYSlider, scaleSlider, rotateSlider,
+ blendMode, flipH, flipV, fitMode].forEach(el => {
+  el.addEventListener('input', render);
+});
+
+posBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!bgImg || !fgImg) return;
+    const pos = btn.dataset.pos;
+    const bw = bgImg.naturalWidth;
+    const bh = bgImg.naturalHeight;
+    const fw = fgImg.naturalWidth * parseFloat(scaleSlider.value);
+    const fh = fgImg.naturalHeight * parseFloat(scaleSlider.value);
+    switch (pos) {
+      case 'center': posXSlider.value = 0; posYSlider.value = 0; break;
+      case 'top-left':
+        posXSlider.value = Math.round(-bw/2 + fw/2);
+        posYSlider.value = Math.round(-bh/2 + fh/2);
+        break;
+      case 'top-right':
+        posXSlider.value = Math.round(bw/2 - fw/2);
+        posYSlider.value = Math.round(-bh/2 + fh/2);
+        break;
+      case 'bottom-left':
+        posXSlider.value = Math.round(-bw/2 + fw/2);
+        posYSlider.value = Math.round(bh/2 - fh/2);
+        break;
+      case 'bottom-right':
+        posXSlider.value = Math.round(bw/2 - fw/2);
+        posYSlider.value = Math.round(bh/2 - fh/2);
+        break;
+    }
+    render();
+  });
+});
+
+function render() {
+  const hasBg = !!bgImg;
+  const hasFg = !!fgImg;
+
+  if (!hasBg && !hasFg) {
+    placeholder.style.display = 'block';
+    canvas.style.display = 'none';
+    coordDisplay.style.display = 'none';
+    infoBar.style.display = 'none';
+    return;
+  }
+
+  placeholder.style.display = 'none';
+  canvas.style.display = 'block';
+  coordDisplay.style.display = 'block';
+  infoBar.style.display = 'block';
+
+  const opacity = parseFloat(opacitySlider.value);
+  const offsetX = parseInt(posXSlider.value);
+  const offsetY = parseInt(posYSlider.value);
+  const scale = parseFloat(scaleSlider.value);
+  const rotate = parseFloat(rotateSlider.value);
+  const mode = blendMode.value;
+  const fFlipH = flipH.checked;
+  const fFlipV = flipV.checked;
+  const fit = fitMode.value;
+
+  opacityVal.textContent = opacity.toFixed(2);
+  xVal.textContent = offsetX;
+  yVal.textContent = offsetY;
+  scaleVal.textContent = scale.toFixed(2);
+  rotateVal.textContent = rotate + '°';
+  coordX.textContent = offsetX;
+  coordY.textContent = offsetY;
+
+  if (hasBg && bgImg.naturalWidth > 0) {
+    canvas.width = bgImg.naturalWidth;
+    canvas.height = bgImg.naturalHeight;
+  } else if (hasBg) {
+    return; // bg image not ready yet
+  } else {
+    canvas.width = fgImg.naturalWidth;
+    canvas.height = fgImg.naturalHeight;
+  }
+
+  infoBar.textContent = hasBg
+    ? `${bgImg.naturalWidth}x${bgImg.naturalHeight}${hasFg ? ' | Overlay: ' + fgImg.naturalWidth + 'x' + fgImg.naturalHeight : ''}`
+    : `${fgImg.naturalWidth}x${fgImg.naturalHeight}`;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (hasBg) ctx.drawImage(bgImg, 0, 0);
+
+  if (!hasFg) return;
+
+  let drawW = fgImg.naturalWidth;
+  let drawH = fgImg.naturalHeight;
+
+  if (hasBg && fit === 'fit-width') {
+    const s = bgImg.naturalWidth / fgImg.naturalWidth;
+    drawW = bgImg.naturalWidth;
+    drawH = fgImg.naturalHeight * s;
+  } else if (hasBg && fit === 'fit-height') {
+    const s = bgImg.naturalHeight / fgImg.naturalHeight;
+    drawW = fgImg.naturalWidth * s;
+    drawH = bgImg.naturalHeight;
+  } else if (hasBg && fit === 'cover') {
+    const s = Math.max(bgImg.naturalWidth / fgImg.naturalWidth, bgImg.naturalHeight / fgImg.naturalHeight);
+    drawW = fgImg.naturalWidth * s;
+    drawH = fgImg.naturalHeight * s;
+  } else if (hasBg && fit === 'fill') {
+    drawW = bgImg.naturalWidth;
+    drawH = bgImg.naturalHeight;
+  }
+
+  ctx.save();
+  ctx.globalAlpha = opacity;
+
+  const blendMap = {
+    'normal': 'source-over', 'multiply': 'multiply', 'screen': 'screen',
+    'overlay': 'overlay', 'darken': 'darken', 'lighten': 'lighten',
+    'difference': 'difference', 'exclusion': 'exclusion',
+    'hard-light': 'hard-light', 'soft-light': 'soft-light',
+    'color-dodge': 'color-dodge', 'color-burn': 'color-burn',
+  };
+  ctx.globalCompositeOperation = blendMap[mode] || 'source-over';
+
+  const cx = canvas.width / 2 + offsetX;
+  const cy = canvas.height / 2 + offsetY;
+  ctx.translate(cx, cy);
+  ctx.rotate(rotate * Math.PI / 180);
+  ctx.scale(scale, scale);
+
+  if (fFlipH || fFlipV) {
+    ctx.scale(fFlipH ? -1 : 1, fFlipV ? -1 : 1);
+  }
+
+  ctx.drawImage(fgImg, -drawW / 2, -drawH / 2, drawW, drawH);
+  ctx.restore();
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  if (!fgImg) return;
+  isDragging = true;
+  const rect = canvas.getBoundingClientRect();
+  dragStartX = e.clientX - rect.left;
+  dragStartY = e.clientY - rect.top;
+  startPosX = parseInt(posXSlider.value);
+  startPosY = parseInt(posYSlider.value);
+  canvas.style.cursor = 'grabbing';
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  const rect = canvas.getBoundingClientRect();
+  const dx = (e.clientX - rect.left) - dragStartX;
+  const dy = (e.clientY - rect.top) - dragStartY;
+  const sx = canvas.width / rect.width;
+  const sy = canvas.height / rect.height;
+  posXSlider.value = Math.round(startPosX + dx * sx);
+  posYSlider.value = Math.round(startPosY + dy * sy);
+  render();
+});
+
+window.addEventListener('mouseup', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+  }
+});
+
+canvas.addEventListener('touchstart', (e) => {
+  if (!fgImg) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  isDragging = true;
+  const rect = canvas.getBoundingClientRect();
+  dragStartX = touch.clientX - rect.left;
+  dragStartY = touch.clientY - rect.top;
+  startPosX = parseInt(posXSlider.value);
+  startPosY = parseInt(posYSlider.value);
+});
+
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!isDragging) return;
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const dx = (touch.clientX - rect.left) - dragStartX;
+  const dy = (touch.clientY - rect.top) - dragStartY;
+  const sx = canvas.width / rect.width;
+  const sy = canvas.height / rect.height;
+  posXSlider.value = Math.round(startPosX + dx * sx);
+  posYSlider.value = Math.round(startPosY + dy * sy);
+  render();
+});
+
+canvas.addEventListener('touchend', () => { isDragging = false; });
+
+function updateSliderRanges() {
+  if (!bgImg) return;
+  const maxDim = Math.max(bgImg.naturalWidth, bgImg.naturalHeight);
+  const range = maxDim * 2;
+  posXSlider.max = range; posXSlider.min = -range;
+  posYSlider.max = range; posYSlider.min = -range;
+}
+
+bgInput.addEventListener('change', () => setTimeout(updateSliderRanges, 100));
+
+downloadBtn.addEventListener('click', async () => {
+  if (!bgImg && !fgImg) return;
+  // Try direct canvas export (works when no taint)
+  try {
+    downloadDataUrl(canvas.toDataURL('image/png'), 'ghep_anh.png');
+    return;
+  } catch {}
+
+  // Fallback: build composition from safe sources
+  try {
+    const BW = bgImg && bgImg.naturalWidth ? bgImg.naturalWidth : 1200;
+    const BH = bgImg && bgImg.naturalHeight ? bgImg.naturalHeight : 675;
+    const oc = document.createElement('canvas');
+    oc.width = BW; oc.height = BH;
+    const octx = oc.getContext('2d');
+
+    octx.fillStyle = '#1a7a42';
+    octx.fillRect(0, 0, BW, BH);
+    drawSafeBackground(octx, BW, BH);
+
+    if (fgImg && fgImg.naturalWidth) {
+      const s = parseFloat(scaleSlider.value) || 1;
+      const ox = parseInt(posXSlider.value) || 0;
+      const oy = parseInt(posYSlider.value) || 0;
+      const rot = parseFloat(rotateSlider.value) || 0;
+      octx.save();
+      octx.globalAlpha = parseFloat(opacitySlider.value) || 1;
+      octx.translate(BW / 2 + ox, BH / 2 + oy);
+      octx.rotate(rot * Math.PI / 180);
+      octx.scale(s, s);
+      octx.drawImage(fgImg, -fgImg.naturalWidth / 2, -fgImg.naturalHeight / 2);
+      octx.restore();
+    }
+
+    downloadDataUrl(oc.toDataURL('image/png'), 'ghep_anh.png');
+  } catch {
+    if (fgImg && fgImg.naturalWidth) {
+      try {
+        const oc = document.createElement('canvas');
+        oc.width = fgImg.naturalWidth;
+        oc.height = fgImg.naturalHeight;
+        oc.getContext('2d').drawImage(fgImg, 0, 0);
+        downloadDataUrl(oc.toDataURL('image/png'), 'anh_mat.png');
+      } catch {
+        alert('Lỗi xuất ảnh. Vui lòng dùng Live Server.');
+      }
+    } else {
+      alert('Lỗi xuất ảnh. Vui lòng dùng Live Server.');
+    }
+  }
+});
+
+function downloadDataUrl(dataUrl, filename) {
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = dataUrl;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+resetPosBtn.addEventListener('click', () => {
+  posXSlider.value = 0;
+  posYSlider.value = 0;
+  render();
+});
+
+resetBtn.addEventListener('click', () => {
+  opacitySlider.value = 1;
+  posXSlider.value = 0;
+  posYSlider.value = 0;
+  scaleSlider.value = 1;
+  rotateSlider.value = 0;
+  blendMode.value = 'normal';
+  flipH.checked = false;
+  flipV.checked = false;
+  fitMode.value = 'none';
+  render();
+});
+
+canvas.style.cursor = 'grab';
+</script>
+</body>
+</html>
